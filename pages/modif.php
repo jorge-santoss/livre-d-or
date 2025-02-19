@@ -1,37 +1,15 @@
-<?php
-session_start();
-
-// Vérifiez si l'utilisateur est connecté
-if (isset($_SESSION['user_id'])) {
-    // Si l'utilisateur est connecté, redirigez-le vers la page d'ajout de commentaire
-    header('Location: ajouter_commentaire.php');
-    exit();
-}
-?>
-
-<?php 
-include("./utils/config2.php");
-include("./classes/récent.php");
-
-$commentObj = new Comment($pdo);
-$comments = $commentObj->getAllComments();
-
-?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=, initial-scale=1.0">
-    <link rel="stylesheet" href="css/ind.css">
+    <link rel="stylesheet" href="../css/ind.css">
     <script src="https://kit.fontawesome.com/ca3234fc7d.js" crossorigin="anonymous"></script>
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
-    <title>Index</title>
+    <title>modification du profil</title>
 </head>
 
 <body>
@@ -39,8 +17,8 @@ $comments = $commentObj->getAllComments();
         <div class="navbar">
             
             <ul class="links">
-                <li><a href="./index.php"><i class="fa-solid fa-house"></i></a></li>
-                <li><a href="./pages/modif.php"><i class="fa-solid fa-user-pen"></i></a></li>
+                <li><a href="../index.php"><i class="fa-solid fa-house"></i></a></li>
+                <li><a href="modif.php"><i class="fa-solid fa-user-pen"></i></a></li>
                 <li><a href="#"><i class="fa-solid fa-book"></i></a></li>
                 <li><a href="#"><i class="fa-solid fa-pen"></i></a></li>
             </ul>
@@ -57,8 +35,8 @@ $comments = $commentObj->getAllComments();
         </div>
         <div class="burger-menu open">
             <ul class="links">
-                <li><a href="./index.php"><i class="fa-solid fa-house"></i></a></li>
-                <li><a href="./pages/modif.php"><i class="fa-solid fa-user-pen"></i></a></li>
+                <li><a href="../index.php"><i class="fa-solid fa-house"></i></a></li>
+                <li><a href="#"><i class="fa-solid fa-user-pen"></i></a></li>
                 <li><a href="#"><i class="fa-solid fa-book"></i></a></li>
                 <li><a href="#"></i></a></li>
                 <div class="divider"></div>
@@ -66,7 +44,6 @@ $comments = $commentObj->getAllComments();
                     <a href="#" class="action-button-user">
                         <i class="fa-solid fa-user"></i>
                     </a>
-                   
                 </div>
             </ul>
         </div>
@@ -83,43 +60,12 @@ $comments = $commentObj->getAllComments();
         }
     </script>
 <main>
-    <div class="page">
-    <div class="intro">
-        <br>
-        <br>
-            <h2>Bienvenue sur notre Livre d'Or !</h2>
+    <div class="page_modif">
+        <div class="info">
             
-            <br>
-            <h2>Laissez une trace de votre passage en écrivant un message.</h2>
-            <h2> Découvrez les témoignages des visiteurs et partagez votre expérience !</h2>
-            </div>
-            <div class="boxe">
-            <div class="book_card">
-                <form action="">
-                    <input type="submit"  value="Livre d'or" class="btn" style="height:50px; width:120px" >
-                </form>
-                <form action="connexion.php">
-    <input type="submit" value="Ajouté un commentaire" class="btn" style="height:50px; width:120px">
-</form>
-            </div>
         </div>
-        <div class="recent">
-<H2>témoignages récent</H2>
-<br>
-        <?php foreach ($comments as $comment_récent): ?>
-    <li class="comment_item">
-        <h3><?php echo htmlspecialchars($comment_récent['comment']); ?></h3>
         
-        <p>-<?php echo htmlspecialchars($comment_récent['login']); ?></p>
-    </li>
-<?php endforeach; ?>
-
-
-        </div>
-            </div>
-       
-</main>
-
-
-</body>
-</html>
+    </div>
+    </main>
+    </body>
+    </hmtl>
