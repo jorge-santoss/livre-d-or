@@ -1,23 +1,29 @@
 <?php
 session_start();
+
 include '../utils/config.php';
+include '../class/auth.php';
 
 $message = '';
+$auth = new Auth($pdo);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['nom']) && isset($_POST['password'])) {
-        $nom = htmlspecialchars($_POST['nom']);
+        $nom = $_POST['nom'];
         $password = $_POST['password'];
 
-        // Vérifier si l'utilisateur existe
-        $sql = "SELECT * FROM user WHERE nom = :nom";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(['nom' => $nom]);
-        $user = $stmt->fetch();
+        // Attempt to login
 
-        if ($user && password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['id'];
-            header('Location: dashboard.php');
+        // if ($auth->login($nom, $password)) {
+        //     echo "Login successful. User ID: " . $_SESSION['user_id']; // Debugging
+        //     header('Location: commentaire.php'); // Ensure no output before this line
+        //     exit();
+
+
+
+        if ($auth->login($nom, $password)) {
+            header('Location: commentaire.php');
+            exit();
         } else {
             $message = "Mauvais identifiants";
         }
@@ -27,16 +33,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <title>login</title>
-    <link rel="stylesheet" href="../css/conect.css">
+    <link rel="stylesheet" href="../css/guestbook.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Agdasima:wght@400;700&family=Dancing+Script:wght@400..700&family=Press+Start+2P&family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-</head>
+    <script>
+        function openPopup(message) {
+            document.getElementById('popup_message').innerText = message;
+            document.getElementById('popup').style.display = 'block';
+        }
 
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+    </script>
+
+</head>
 <body>
     <main>
         <p class="livre_title">Livre d'Or</p>
@@ -48,15 +63,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="tittle">
                                 <h2>Connexion</h2>
                             </div>
-                            <label for="username"></label>
-                            <input type="text" id="username" name="username" placeholder="Nom"><br>
+                            <label for="nom"></label>
+                            <input type="text" id="nom" name="nom" placeholder="Nom"><br>
                             <label for="password"></label>
                             <input type="password" id="password" name="password" placeholder="Password"><br>
-                            <form action="dashboard.php">
-                                <input type="submit" value="Se connecter" class="button_connect">
-                                <p class="inscription"> "Vous n'avez pas de compte"
-                                    <br><a href="inscription.php">Inscription</a>
-                                </p>
+                            <input type="submit" value="Se connecter" class="button_connect">
+                            <p class="inscription"> "Vous n'avez pas de compte?"
+                                <br><a href="inscription.php">Inscription</a>
+                            </p>
                         </div>
                     </div>
                     <div class="login_img">
@@ -65,9 +79,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </div>
         </form>
-        <?php if ($message) echo "<p>$message</p>"; ?>
+        <div id="popup" class="popup" onclick="closePopup()">
+            <div class="popup_content">
+                <p id="popup_message" class="popup_text"></p>
+                <button onclick="closePopup()">Close</button>
+            </div>
+        </div>
 
+        <div class="message">
+        <?php
+        if (!empty($message)) {
+            echo "<script>openPopup('$message');</script>";
+        }
+        ?>
+        </div>
     </main>
 </body>
-
 </html>
