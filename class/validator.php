@@ -19,8 +19,13 @@ class Validator {
                preg_match('/[^\w]/', $password);
     }
 
+<<<<<<< HEAD
     public static function validateUsername($username) {
         return preg_match('/^[a-zA-Z0-9_]*$/', $username) && strlen($username) <= 10;
+=======
+    public static function validateUsername($nom) {
+        return preg_match('/^[a-zA-Z0-9_]*$/', $nom) && strlen($nom) <= 10;
+>>>>>>> main
     }
 }
 ?>
