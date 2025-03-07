@@ -1,7 +1,7 @@
 
 <?php 
 include("./utils/config2.php");
-include("./class/récent.php");
+include("./classs/récent.php");
 
 $commentObj = new Comment($pdo);
 $comments = $commentObj->getAllComments();

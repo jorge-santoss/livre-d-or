@@ -1,8 +1,8 @@
 <?php
 session_start();
 include '../utils/config2.php';
-include '../class/validator.php';
-include '../class/userupd.php';
+include '../classes/validator.php';
+include '../classes/userupd.php';
 
 $message = '';
 
@@ -138,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         <div class="buttons">
 
-        <a href="../class/deconnexion.php" class="action-connexion">Déconnexion</a>
+        <a href="../classes/deconnexion.php" class="action-connexion">Déconnexion</a>
    
 </div>
         <div class="burger-menu-button">

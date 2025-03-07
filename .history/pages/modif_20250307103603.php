@@ -2,7 +2,7 @@
 session_start();
 include '../utils/config2.php';
 include '../class/validator.php';
-include '../class/userupd.php';
+include '../classes/userupd.php';
 
 $message = '';
 
