@@ -13,10 +13,10 @@ class Validator {
 
     public static function validatePassword($password) {
         return strlen($password) >= 8 && 
-               preg_match('/[A-Z]/', $password) &&
-               preg_match('/[a-z]/', $password) &&
-               preg_match('/[0-9]/', $password) &&
-               preg_match('/[^\w]/', $password);
+            preg_match('/[A-Z]/', $password) &&
+            preg_match('/[a-z]/', $password) &&
+            preg_match('/[0-9]/', $password) &&
+            preg_match('/[^\w]/', $password);
     }
 
     public static function validateUsername($nom) {
