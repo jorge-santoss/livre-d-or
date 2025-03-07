@@ -9,13 +9,13 @@ $comments = $commentObj->getAllComments();
 ?>
 
 <?php
-session_start();
-$_SESSION['user_id'] = 1;
+
+
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['user_id'] = null; // Définit la variable si elle n'existe pas encore
 }
 
-var_dump($_SESSION); // Teste si la session contient bien "user_id"
+
 
 ?>
 
@@ -25,7 +25,7 @@ var_dump($_SESSION); // Teste si la session contient bien "user_id"
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=, initial-scale=1.0">
-    <link rel="stylesheet" href="css/ind.css">
+    <link rel="stylesheet" href="css/index.css">
     <script src="https://kit.fontawesome.com/ca3234fc7d.js" crossorigin="anonymous"></script>
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,20 +42,22 @@ var_dump($_SESSION); // Teste si la session contient bien "user_id"
                 <li><a href="./index.php"><i class="fa-solid fa-house"></i></a></li>
                 <li><a href="./pages/modif.php"><i class="fa-solid fa-user-pen"></i></a></li>
                 <li><a href="#"><i class="fa-solid fa-book"></i></a></li>
-                <li><a href="#"><i class="fa-solid fa-pen"></i></a></li>
+                <li>
+    <a href="<?php echo isset($_SESSION['user_id']) ? 'ajouter_commentaire.php' : 'connexion.php'; ?>">
+        <i class="fa-solid fa-pen"></i>
+    </a>
+</li>
+
             </ul>
-            <div class="box">
-                <a href="#">
-                    <input type="search" br placeholder="search...">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </a>
-            </div>
+           
             <div class="buttons">
-                <a href="../matchatea/pages/profil.html" class="action-button-user">
-                    <i class="fa-solid fa-user"></i>
-                </a>
-               
-            </div>
+    <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] !== null): ?>
+        <a href="./classes/deconnexion.php" class="action-connexion">Déconnexion</a>
+    <?php else: ?>
+        <a href="connexion.php" class="action-connexion">Connexion</a>
+    <?php endif; ?>
+</div>
+
             
             <div class="burger-menu-button">
                 <i class="fa-solid fa-bars"></i>

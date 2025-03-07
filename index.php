@@ -15,7 +15,7 @@ if (!isset($_SESSION['user_id'])) {
     $_SESSION['user_id'] = null; // Définit la variable si elle n'existe pas encore
 }
 
-var_dump($_SESSION); // Teste si la session contient bien "user_id"
+
 
 ?>
 
