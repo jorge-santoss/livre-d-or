@@ -66,10 +66,13 @@ $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </head>
     <body>
         <header>
-            <!-- <h1></h1>
+            <!-- <h1></h1> -->
             <nav>
-
-            </nav> -->
+                <form action="search.php" method="get">
+                    <input type="text" name="search" placeholder="Rechercher...">
+                    <input type="submit">
+                </form>
+            </nav> 
         </header>
         <main>
             <form action="livre-or.php" method="get">
