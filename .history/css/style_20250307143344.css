@@ -1,0 +1,47 @@
+url(index.css)
+button, input[type="submit"] {
+    color: #FFD700;
+    background-color: #2C3E50;
+    border-radius: 20%;
+}
+button {
+    width: 25px;
+    height: 25px;
+}
+.buttons {
+    text-align: center;
+}
+.user-date {
+    font-size : 12px;
+    display: flex;
+    gap : 5px;
+}
+.user {
+    font-weight: 900;
+}
+.date {
+    font-weight: 200;
+}
+.comment-txt{
+    font-size : 15px;
+}
+.comment {
+    border: 2px solid #FFD700;
+    border-radius: 20px;
+    margin: 20px;
+    padding: 10px;
+}
+.comment, .comment-txt, .user, .date, .user-date{
+    background-color: black;
+    color: #FFD700;
+}
+.nbe-comment {
+    width: 50px;
+}
+.tri, .nbe-comment, .tri option {
+    background-color: white;
+    border-radius: 20px;
+}
+option {
+    font-family: 'Dancing Script'
+}

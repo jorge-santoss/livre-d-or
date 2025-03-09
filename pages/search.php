@@ -20,7 +20,7 @@ $stmt->bindParam(":search", $search, PDO::PARAM_STR);
 // $stmt->bindParam(":offset", $offset, PDO::PARAM_INT); 
 // $stmt->bindParam(":commentsPerPage", $commentsPerPage, PDO::PARAM_INT);
 
-var_dump($stmt);
+
 
 $stmt->execute();
 $result = $stmt->fetchAll();?>
