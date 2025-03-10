@@ -100,7 +100,7 @@ $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] !== null): ?>
                 <a href="../class/deconnexion.php" class="action-connexion">Déconnexion</a>
             <?php else: ?>
-                <a href="./pages/connexion.php" class="action-connexion">Connexion</a>
+                <a href="./connexion.php" class="action-connexion">Connexion</a>
             <?php endif; ?>
         </div>
         <div class="burger-menu-button">
@@ -113,7 +113,7 @@ $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <li><a href="modif.php"><i class="fa-solid fa-user-pen"></i></a></li>
             <li><a href="livre-or.php"><i class="fa-solid fa-book"></i></a></li>
             <li>
-                <a href="<?php echo isset($_SESSION['user_id']) ? 'commentaire.php' : './pages/connexion.php'; ?>">
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'commentaire.php' : '.connexion.php'; ?>">
                     <i class="fa-solid fa-pen"></i>
                 </a>
             </li>
@@ -122,7 +122,7 @@ $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] !== null): ?>
                     <a href="../class/deconnexion.php" class="action-connexion">Déconnexion</a>
                 <?php else: ?>
-                    <a href="./pages/connexion.php" class="action-connexion">Connexion</a>
+                    <a href="./connexion.php" class="action-connexion">Connexion</a>
                 <?php endif; ?>
             </div>
         </ul>
