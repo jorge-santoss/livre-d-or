@@ -26,7 +26,7 @@ $offset = ($currentPage - 1) * $commentsPerPage;
 $ordre = isset($_GET['tri']) ? $_GET['tri'] : 'desc';
 
 // Définir la requête SQL pour récupérer les commentaires
-$commentsQuery = "SELECT comments.*, user.nom 
+$commentsQuery = "SELECT comments.*, user.nom, user.id as user_id
                   FROM comments 
                   INNER JOIN user ON comments.user_id = user.id 
                   ORDER BY comments.date " . ($ordre === 'asc' ? 'ASC' : 'DESC') . " 
@@ -45,35 +45,76 @@ $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Livre d'or</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/display.css">
     <script src="https://kit.fontawesome.com/ca3234fc7d.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
+<header>
         <div class="navbar">
+            
             <ul class="links">
                 <li><a href="../index.php"><i class="fa-solid fa-house"></i></a></li>
                 <li><a href="./modif.php"><i class="fa-solid fa-user-pen"></i></a></li>
                 <li><a href="./livre-or.php"><i class="fa-solid fa-book"></i></a></li>
                 <li>
-                    <a href="<?php echo isset($_SESSION['user_id']) ? 'commentaire.php' : './connexion.php'; ?>">
-                        <i class="fa-solid fa-pen"></i>
-                    </a>
-                </li>
+    <a href="<?php echo isset($_SESSION['user_id']) ? 'commentaire.php' : './connexion.php'; ?>">
+        <i class="fa-solid fa-pen"></i>
+    </a>
+</li>
+
             </ul>
+           
             <div class="buttons">
-                <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] !== null): ?>
-                    <a href="../class/deconnexion.php" class="action-connexion">Déconnexion</a>
-                <?php else: ?>
-                    <a href="./pages/connexion.php" class="action-connexion">Connexion</a>
-                <?php endif; ?>
+            <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] !== null): ?>
+        <a href="../class/deconnexion.php" class="action-connexion">Déconnexion</a>
+    <?php else: ?>
+        <a href="./pages/connexion.php" class="action-connexion">Connexion</a>
+    <?php endif; ?>
+</div>
+
+            
+            <div class="burger-menu-button">
+                <i class="fa-solid fa-bars"></i>
             </div>
         </div>
+        <div class="burger-menu open">
+            <ul class="links">
+                <li><a href="../index.php"><i class="fa-solid fa-house"></i></a></li>
+                <li><a href="modif.php"><i class="fa-solid fa-user-pen"></i></a></li>
+                <li><a href="livre-or.php"><i class="fa-solid fa-book"></i></a></li>
+                <li>
+    <a href="<?php echo isset($_SESSION['user_id']) ? 'commentaire.php' : './pages/connexion.php'; ?>">
+        <i class="fa-solid fa-pen"></i>
+    </a>
+</li>
+                <div class="divider"></div>
+                <div class="buttons-burger-menu">
+                <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] !== null): ?>
+        <a href="../class/deconnexion.php" class="action-connexion">Déconnexion</a>
+    <?php else: ?>
+        <a href="./pages/connexion.php" class="action-connexion">Connexion</a>
+    <?php endif; ?>
+                       
+                    </a>
+                   
+                </div>
+            </ul>
+        </div>
     </header>
+    <script>
+        const burgerMenuButton = document.querySelector('.burger-menu-button ')
+        const burgerMenuButtonIcon = document.querySelector('.burger-menu-button i')
+        const burgerMenu = document.querySelector('.burger-menu')
 
+        burgerMenuButton.onclick = function () {
+            burgerMenu.classList.toggle('open')
+            const isOpen = burgerMenu.classList.contains('open')
+            burgerMenuButtonIcon.classList = isOpen ? 'fa-solid fa-x' : 'fa-solid fa-bars'
+        }
+    </script>
     <main>
         <nav>
             <form action="search.php" method="get">
@@ -94,17 +135,83 @@ $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </form>
 
         <?php 
+        // Vérifier si l'utilisateur est connecté
+        $currentUserId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+        $currentUserRole = isset($_SESSION['role']) ? $_SESSION['role'] : 'visiteur';
+
         // Afficher les commentaires
         foreach ($comments as $comment) {
             $date = new DateTime($comment['date']);
             echo "<div class='comment'>
                     <p class='user-date'>
                         <span class='user'>{$comment['nom']}</span>  
-                        <span class='date'>le ".date_format($date,'j/n/o à G:i:s')."</span>
+                        <span class='date'>le " . date_format($date,'j/n/o à G:i:s') . "</span>
                     </p>
-                    <p class='comment-txt'>{$comment['comment']}</p>
-                  </div>";
-        }
+                    <p class='comment-txt'>{$comment['comment']}</p>";
+
+            // Vérifier les permissions pour l'affichage des boutons
+            echo "<td>";
+            
+            // L'admin peut tout modifier/supprimer
+            if ($currentUserRole === 'admin') {
+                echo '<a href="commentupdate.php?edit=' . $comment['id'] . '" class="btn">
+                        <i class="fas fa-edit"></i> Modifier 
+                      </a>';
+                echo '<a href="livre-or.php?delete=' . $comment['id'] . '" class="btn" onclick="return confirm(\'Voulez-vous vraiment supprimer ce commentaire ?\');">
+                        <i class="fas fa-trash"></i> Supprimer 
+                      </a>';
+            } 
+            
+            // L'utilisateur peut modifier/supprimer uniquement ses propres commentaires
+            elseif ($currentUserRole === 'utilisateur' && $comment['user_id'] == $currentUserId) {
+                echo '<a href="commentupdate.php?edit=' . $comment['id'] . '" class="btn">
+                        <i class="fas fa-edit"></i> Modifier 
+                      </a>';
+                echo '<a href="livre-or.php?delete=' . $comment['id'] . '" class="btn" onclick="return confirm(\'Voulez-vous vraiment supprimer ce commentaire ?\');">
+                        <i class="fas fa-trash"></i> Supprimer 
+                      </a>';
+            }
+            
+            // Le modérateur peut seulement supprimer les commentaires
+            elseif ($currentUserRole === 'moderateur') {
+                echo '<a href="livre-or.php?delete=' . $comment['id'] . '" class="btn" onclick="return confirm(\'Voulez-vous vraiment supprimer ce commentaire ?\');">
+                        <i class="fas fa-trash"></i> Supprimer 
+                      </a>';
+            }
+
+            echo "</td></div>";
+            if (isset($_GET['delete'])) {
+                $deleteId = (int)$_GET['delete']; // Convertir en entier pour plus de sécurité
+            
+                // On va d’abord vérifier si ce commentaire existe et qui en est le propriétaire
+                $checkQuery = "SELECT user_id FROM comments WHERE id = :id";
+                $checkStmt = $pdo->prepare($checkQuery);
+                $checkStmt->execute(['id' => $deleteId]);
+                $commentRow = $checkStmt->fetch(PDO::FETCH_ASSOC);
+            
+                if ($commentRow) {
+                    // Récupérer l'ID du propriétaire
+                    $ownerId = $commentRow['user_id'];
+            
+                    // Vérifier les permissions : admin peut tout supprimer,
+                    // moderateur peut supprimer tout, utilisateur seulement ses propres commentaires
+                    if (
+                        $currentUserRole === 'admin' ||
+                        $currentUserRole === 'moderateur' ||
+                        ($currentUserRole === 'utilisateur' && $ownerId == $currentUserId)
+                    ) {
+                        // On supprime le commentaire
+                        $deleteCommentQuery = "DELETE FROM comments WHERE id = :id";
+                        $deleteStmt = $pdo->prepare($deleteCommentQuery);
+                        $deleteStmt->execute(['id' => $deleteId]);
+                    }
+                }
+            
+                // Redirection pour éviter de rester avec ?delete= dans l'URL
+                header("Location: livre-or.php");
+                exit();
+            }
+            }
 
         // Afficher les liens de pagination
         echo "<div class='buttons'>";

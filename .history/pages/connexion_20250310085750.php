@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['user_id'] = $userRow['id'];
 
             // Redirection vers la page index en étant connecté
-            header('Location: ../index.php');
+            header('Location: ./c.php');
             exit();
         } else {
             $message = "Mauvais identifiants";

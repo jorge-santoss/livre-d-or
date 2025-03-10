@@ -14,31 +14,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Tentative de connexion
         if ($auth->login($nom, $password)) {
-            // On récupère l'utilisateur en base
+            // Ici, on récupère toutes les infos de l'utilisateur (dont le rôle)
             $sql = "SELECT * FROM user WHERE nom = :nom";
             $stmt = $pdo->prepare($sql);
             $stmt->execute(['nom' => $nom]);
             $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Si l'utilisateur n'est pas admin ou modérateur, on lui assigne "utilisateur"
-            if ($userRow['role'] !== 'admin' && $userRow['role'] !== 'moderateur') {
-                // Mise à jour en base de données
-                $updateSql = "UPDATE user SET role = 'utilisateur' WHERE id = :id";
-                $updateStmt = $pdo->prepare($updateSql);
-                $updateStmt->execute(['id' => $userRow['id']]);
-
-                // Mise à jour dans la session
-                $_SESSION['role'] = 'utilisateur';
-            } else {
-                // S'il est admin ou modérateur, on garde son rôle
-                $_SESSION['role'] = $userRow['role'];
-            }
-
-            // Enregistrez l'ID de l'utilisateur dans la session
+            // On enregistre l'ID et le rôle dans la session
             $_SESSION['user_id'] = $userRow['id'];
+            $_SESSION['role']    = $userRow['role'];  // <-- IMPORTANT !
 
-            // Redirection vers la page index en étant connecté
-            header('Location: ../index.php');
+            // Redirection vers la page commentaire
+            header('Location: ./commentaire.php');
             exit();
         } else {
             $message = "Mauvais identifiants";
@@ -47,6 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
+?>
 
 <!DOCTYPE html>
 <html lang="fr">

@@ -25,23 +25,12 @@ class Comment {
         }
     }
     public function getCommentById($comment_id) {
-        $sql = "SELECT * FROM comments WHERE id = :id";
+        $sql = "SELECT comment FROM comments WHERE id = :comment_id";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(':id', $comment_id, PDO::PARAM_INT);
+        $stmt->bindParam(':comment_id', $comment_id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-    public function updateComment($comment_id, $newComment)
-{
-    // Example query; adjust column/table names as needed
-    $sql = "UPDATE comments 
-            SET comment = :comment, date = NOW() 
-            WHERE id = :comment_id";
-    $stmt = $this->pdo->prepare($sql);
-    $stmt->bindValue(':comment', $newComment, PDO::PARAM_STR);
-    $stmt->bindValue(':comment_id', $comment_id, PDO::PARAM_INT);
-    return $stmt->execute();
-}
-
+    
 }
 ?>

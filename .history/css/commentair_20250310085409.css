@@ -28,11 +28,11 @@
   
   a{
     text-decoration: none;
-    color:#B8860B
+    color: white;
   }
   
   a:hover{
-  color:white;
+  color:#B8860B;
   }
   
   header{
@@ -612,5 +612,5 @@ body {
 }
 
 .mini-label{
-    padding-left: 35.4%;
+    flo;
 }

@@ -14,31 +14,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Tentative de connexion
         if ($auth->login($nom, $password)) {
-            // On récupère l'utilisateur en base
-            $sql = "SELECT * FROM user WHERE nom = :nom";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute(['nom' => $nom]);
-            $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            // Si l'utilisateur n'est pas admin ou modérateur, on lui assigne "utilisateur"
-            if ($userRow['role'] !== 'admin' && $userRow['role'] !== 'moderateur') {
-                // Mise à jour en base de données
-                $updateSql = "UPDATE user SET role = 'utilisateur' WHERE id = :id";
-                $updateStmt = $pdo->prepare($updateSql);
-                $updateStmt->execute(['id' => $userRow['id']]);
-
-                // Mise à jour dans la session
-                $_SESSION['role'] = 'utilisateur';
-            } else {
-                // S'il est admin ou modérateur, on garde son rôle
-                $_SESSION['role'] = $userRow['role'];
-            }
-
-            // Enregistrez l'ID de l'utilisateur dans la session
-            $_SESSION['user_id'] = $userRow['id'];
-
-            // Redirection vers la page index en étant connecté
-            header('Location: ../index.php');
+            // Enregistrez l'ID de l'utilisateur dans la session après la connexion réussie
+            $_SESSION['user_id'] = $auth->getUserId($nom);  // Assurez-vous que la méthode getUserId() existe et retourne l'ID de l'utilisateur
+            header('Location: ./commentaire.php');
             exit();
         } else {
             $message = "Mauvais identifiants";
@@ -47,13 +25,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>login</title>
-    <link rel="stylesheet" href="../css/commentaire.css">
+    <link rel="stylesheet" href="../css/commenta.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Agdasima:wght@400;700&family=Dancing+Script:wght@400..700&family=Press+Start+2P&family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
