@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <p class="livre_title">Modifier votre commentaire</p>
 
 <form action="" method="post">
-    <div class="comment_container">
+    <div class="comment_container"><label for="comment" class="mini-label">Commentaire :</label>
 
         <div class="comment_card">
             

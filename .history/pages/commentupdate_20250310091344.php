@@ -51,10 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://kit.fontawesome.com/ca3234fc7d.js" crossorigin="anonymous"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
     <title>Modifier Commentaire</title>
     <link rel="stylesheet" href="../css/commentaire.css">
     <script>
@@ -133,12 +129,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </script>
 
 <p class="livre_title">Modifier votre commentaire</p>
-
 <form action="" method="post">
     <div class="comment_container">
 
         <div class="comment_card">
-            
+                <label for="comment" class="mini-label">Commentaire :</label>
             <div class="table_comment">
                 
                 <textarea class="box" id="comment" name="comment" cols="50" rows="10"><?php echo htmlentities($comment_data['comment']); ?></textarea>
