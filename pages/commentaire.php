@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Commentaires</title>
-    <link rel="stylesheet" href="../css/commentaire.css">
+    <link rel="stylesheet" href="../css/commentair.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <script src="https://kit.fontawesome.com/ca3234fc7d.js" crossorigin="anonymous"></script>
 
